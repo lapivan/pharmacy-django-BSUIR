@@ -19,4 +19,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # копируем весь проект
 COPY . /app/
-CMD ["gunicorn", "pharmacy.wsgi:application", "--bind", "0.0.0.0:10000"]
+RUN chmod +x /app/entrypoint.sh
+
+# запускаем скрипт
+CMD ["/app/entrypoint.sh"]
