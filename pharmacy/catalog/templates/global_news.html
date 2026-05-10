@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Мировые новости медицины</h1>
+<p>Актуальные публикации из проверенных СМИ</p>
+
+<div>
+    {% for article in external_articles %}
+        <div>
+            {% if article.urlToImage %}
+                <img src="{{ article.urlToImage }}">
+            {% endif %}
+            
+            <h3>{{ article.title }}</h3>
+            <p>{{ article.description|truncatewords:20 }}</p>
+            
+            <div>
+                <small>{{ article.publishedAt|slice:":10" }}</small>
+                <a href="{{ article.url }}" target="_blank">Читать далее</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>К сожалению, новости временно недоступны.</p>
+    {% endfor %}
+</div>
+<div >
+    <h4>Доза позитива</h4>
+    <p >Улыбнитесь! Настроение тоже лечит.</p>
+    
+    {% if dog_image %}
+        <img src="{{ dog_image }}" alt="Случайная собака" >
+        <p>(Данные предоставлены Dogs API )</p>
+    {% else %}
+        <p>Собачка убежала, но скоро вернется.</p>
+    {% endif %}
+    
+    <button onclick="location.reload();">Еще</button>
+</div>
+{% endblock %}

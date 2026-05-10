@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Модерация отзывов</h1>
+<p>Удалить отзыв от пользователя <strong>{{ object.username }}</strong>?</p>
+<blockquote>{{ object.text|truncatewords:20 }}</blockquote>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Подтвердить удаление</button>
+</form>
+<a href="{% url 'review_list' %}">Назад к списку</a>
+{% endblock %}

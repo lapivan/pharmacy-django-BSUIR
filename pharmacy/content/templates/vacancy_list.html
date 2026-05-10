@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Вакансии</h1>
+{% if user.is_superuser %}
+    <a href="{% url 'vacancy_create' %}">Добавить вакансию (Admin)</a>
+{% endif %}
+<ul>
+    {% for vacancy in vacancies %}
+        <li>
+            <strong>{{ vacancy.title }}</strong>
+            <p>Создано: {{ vacancy.created_at|date:"d/m/Y" }}</p>
+    <p>Обновлено: {{ vacancy.updated_at|date:"d/m/Y" }}</p>
+            <a href="{% url 'vacancy_detail' vacancy.pk %}">Подробнее</a>
+            {% if user.is_superuser %}
+                | <a href="{% url 'vacancy_update' vacancy.pk %}">Редактировать</a> |
+                <a href="{% url 'vacancy_delete' vacancy.pk %}">Удалить</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>Вакансий нет.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

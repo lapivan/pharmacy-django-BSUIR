@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Мои продажи - Аптека{% endblock %}
+
+{% block content %}
+<h2>Мои оформленные продажи</h2>
+
+<br>
+
+{% if sales %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>№ Чека</th>
+                <th>Покупатель</th>
+                <th>Дата и время</th>
+                <th>Отдел</th>
+                <th>Сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>#{{ sale.id }}</td>
+                <td>{{ sale.client.username }}</td>
+                <td>{{ sale.sale_date|date:"d.m.Y H:i" }}</td>
+                <td>{{ sale.department.name|default:"—" }}</td>
+                <td>{{ sale.total_amount }} руб.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+        <div>
+            <br>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">« Назад</a>
+            {% endif %}
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Вперед »</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% else %}
+    <p>Вы еще не оформили ни одной продажи.</p>
+{% endif %}
+
+<br>
+<div>
+    <a href="{% url 'sale_create' %}">+ Оформить новую продажу</a>
+</div>
+{% endblock %}

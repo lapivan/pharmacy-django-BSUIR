@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ object.header }}</h1>
+<p><small>Дата публикации: {{ object.publication_date }}</small></p>
+{% if object.logo %}
+    <img src="{{ object.logo.url }}" alt="logo" width="200">
+{% endif %}
+<p>{{ object.news_text }}</p>
+<hr>
+<a href="{% url 'news_list' %}">Назад к списку</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Удаление вакансии</h1>
+<p>Вы уверены, что вакансия <strong>"{{ object.title }}"</strong> больше не актуальна и её нужно удалить?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" >Удалить вакансию</button>
+</form>
+<a href="{% url 'vacancy_list' %}">Отмена</a>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Наши промокоды и акции</h1>
+{% if user.is_superuser %}
+    <a href="{% url 'promocode_create' %}">Создать промокод (Admin)</a>
+{% endif %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Скидка</th>
+            <th>Код</th>
+            <th>Дата создания</th>
+            {% if user.is_superuser %}
+                <th>Статус</th>
+                <th>Действия</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for promo in promocodes %}
+            {% if promo.is_active or user.is_superuser %}
+            <tr>
+                <td>{{ promo.discount_percent }}%</td>
+                <td>{{ promo.code }}</td>
+                <td>{{ promo.created_at|date:"d/m/Y" }}</td>
+                {% if user.is_superuser %}
+                    <td>{{ promo.is_active|yesno:"Активен,Неактивен" }}</td>
+                    <td>
+                        <a href="{% url 'promocode_update' promo.pk %}">Ред.</a> | 
+                        <a href="{% url 'promocode_delete' promo.pk %}">Удал.</a>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

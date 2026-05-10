@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+    <h1>Оформление покупки</h1>
+    
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <fieldset>
+            <legend>Основные данные</legend>
+            {{ form.as_p }}
+        </fieldset>
+
+        <hr>
+        <h3>Состав заказа (лекарства)</h3>
+        
+        {{ items.management_form }}
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Препарат</th>
+                    <th>Количество</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item_form in items %}
+                    <tr>
+                        <td>
+                            {{ item_form.id }} 
+                            {{ item_form.medicine }}
+                            {% if item_form.medicine.errors %}
+                                <br><span>{{ item_form.medicine.errors }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ item_form.quantity }}
+                            {% if item_form.quantity.errors %}
+                                <br><span >{{ item_form.quantity.errors }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <div>
+            <button type="submit">Оформить покупку</button>
+            <a href="{% url 'medicine_list' %}">Отмена</a>
+        </div>
+    </form>
+{% endblock %}

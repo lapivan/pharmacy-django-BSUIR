@@ -1,0 +1,37 @@
+
+{% extends 'base.html' %}
+{% load tz %}
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ object.name }}</h1>
+    {% if object.photo %}
+        <img src="{{ object.photo.url }}" alt="{{ object.name }}" width="300">
+    {% endif %}
+    
+    <ul>
+        <li><b>Категория:</b> {{ object.category.name }}</li>
+        <li><b>Поставщик:</b> {{ object.supplier.name }}</li>
+        <li><b>Отдел:</b> {{ object.department.name }}</li>
+        <li><b>Цена:</b> {{ object.price }} руб.</li>
+        <li><b>Остаток:</b> {{ object.stock_quantity }} шт.</li>
+    </ul>
+
+    <h3>Описание</h3>
+    <p>{{ object.description }}</p>
+
+    <h3>Инструкция</h3>
+    <p>{{ object.instruction }}</p>
+    <td>
+        Добавлено: {{ object.created_at|date:"d/m/Y H:i" }}<br>
+        {# Время UTC (используем фильтр utc) #}
+        <small>UTC: {{ object.created_at|utc|date:"d/m/Y H:i" }}</small>
+    </td>
+    <td>
+        Изменено: {{ object.updated_at|date:"d/m/Y H:i" }}<br>
+        <small>UTC: {{ object.updated_at|utc|date:"d/m/Y H:i" }}</small>
+    </td>
+
+    <br>
+    <a href="{% url 'medicine_list' %}">Назад в каталог</a>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ object.title }}</h1>
+<p>{{ object.description }}</p>
+<p>Статус: {% if object.is_active %}Активна{% else %}Закрыта{% endif %}</p>
+<hr>
+<a href="{% url 'vacancy_list' %}">К списку вакансий</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Наши контакты{% endblock %}
+
+{% block content %}
+    <h1>Связаться с нами</h1>
+    <p>Ниже представлен список сотрудников и их контактные данные для связи.</p>
+
+    <div >
+        {% for emp in employees %}
+            <div >
+                <h3>{{ emp.full_name }}</h3>
+                <p><strong>Должность:</strong> {{ emp.position }}</p>
+                <p><strong>Отдел:</strong> {{ emp.department.name }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ emp.user.email }}">{{ emp.user.email }}</a></p>
+            </div>
+        {% empty %}
+            <p>Контактная информация временно недоступна.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

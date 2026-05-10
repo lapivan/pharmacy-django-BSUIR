@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Новости</h1>
+    {% if user.is_superuser %}
+        <a href="{% url 'news_create' %}">Добавить новость (Admin)</a>
+    {% endif %}
+    <ul>
+        {% for news in news_list %}
+            <li>
+                <h3>{{ news.header }}</h3>
+                <p>{{ news.short_description }}</p>
+                <p>Создано: {{ news.created_at|date:"d/m/Y" }}</p>
+    <p>Обновлено: {{ news.updated_at|date:"d/m/Y" }}</p>
+                <a href="{% url 'news_detail' news.pk %}">Читать далее</a>
+                {% if user.is_superuser %}
+                    | <a href="{% url 'news_update' news.pk %}">Редактировать</a> 
+                    | <a href="{% url 'news_delete' news.pk %}">Удалить</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Новостей пока нет.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Редактирование{% else %}Добавление{% endif %} записи
+{% endblock %}
+
+{% block content %}
+    <h1>
+        {% if form.instance.pk %}
+            Редактировать: {{ form.instance }}
+        {% else %}
+            Добавить новую запись
+        {% endif %}
+    </h1>
+
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div>
+                    {{ form.non_field_errors }}
+                </div>
+                <br>
+            {% endif %}
+
+            {% for field in form %}
+                <div>
+                    <label><b>{{ field.label }}</b></label>
+                    <br>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <br>
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div>{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                <br>
+            {% endfor %}
+
+            <hr>
+            <button type="submit">Сохранить</button>
+            <a href="{% url 'supplier_list' %}">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

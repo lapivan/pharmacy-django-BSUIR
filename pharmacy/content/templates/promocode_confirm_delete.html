@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Удаление промокода</h1>
+<p>Вы собираетесь удалить промокод: <strong>{{ object.code }}</strong> ({{ object.discount_percent }}%).</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить промокод</button>
+</form>
+<a href="{% url 'promocode_list' %}">Отмена</a>
+{% endblock %}

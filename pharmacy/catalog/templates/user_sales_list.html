@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Мои покупки{% endblock %}
+
+{% block content %}
+    <h1>История покупок</h1>
+    <ul>
+        {% for sale in sales %}
+            {% if sale.total_amount > 0 %}
+            <li >
+                <strong>Заказ от {{ sale.sale_date|date:"d/m/Y H:i" }}</strong><br>
+                Сумма: <b>{{ sale.total_amount }} руб.</b>
+                
+                {% if sale.applied_promocode %}
+                   <br><small>Использован промокод: {{ sale.applied_promocode }}</small>
+                {% endif %}
+                
+                <br><small><i>Отдел: {{ sale.department.name|default:"—" }}</i></small>
+            </li>
+            {% endif %}
+        {% empty %}
+            <li>Вы еще ничего не покупали.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

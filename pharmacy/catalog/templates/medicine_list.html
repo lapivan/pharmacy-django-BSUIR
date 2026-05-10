@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог медикаментов{% endblock %}
+
+{% block content %}
+    <h1>Каталог медикаментов</h1>
+
+    <form method="get" >
+        <input type="text" name="search" placeholder="Поиск по названию..." value="{{ request.GET.search }}">
+        
+        <select name="category">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="number" name="min_price" placeholder="Цена от" value="{{ request.GET.min_price }}">
+        <input type="number" name="max_price" placeholder="Цена до" value="{{ request.GET.max_price }}">
+        
+        <button type="submit">Применить фильтры</button>
+        <a href="{% url 'medicine_list' %}">Сбросить</a>
+    </form>
+
+    {% if user.is_superuser %}
+        <a href="{% url 'medicine_create' %}">Добавить препарат (Admin)</a>
+        <br><br>
+    {% endif %}
+
+    <div >
+        {% for medicine in medicines %}
+            <div >
+                {% if medicine.photo %}
+                    <img src="{{ medicine.photo.url }}" alt="{{ medicine.name }}" >
+                {% endif %}
+                <h3>{{ medicine.name }}</h3>
+                <p><b>Категория:</b> {{ medicine.category.name }}</p>
+                <p><b>Цена:</b> {{ medicine.price }} руб.</p>
+                <p><b>В наличии:</b> {{ medicine.stock_quantity }} шт.</p>
+                
+                <a href="{% url 'medicine_detail' medicine.pk %}">Подробнее</a>
+                
+                {% if user.is_superuser %}
+                    <br><br>
+                    <a href="{% url 'medicine_update' medicine.pk %}">Редактировать</a> | 
+                    <a href="{% url 'medicine_delete' medicine.pk %}" >Удалить</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>Препараты не найдены.</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+    
+    {% load tz %}
+
+<div >
+    <h3>Временная информация</h3>
+    
+    <p><b>Локальное время:</b> {{ current_time_local|date:"d/m/Y H:i" }} ({{ user_timezone }})</p>
+    
+    {% timezone "UTC" %}
+        <p><b>Время UTC:</b> {{ current_time_utc|date:"d/m/Y H:i" }} (UTC)</p>
+    {% endtimezone %}
+    
+    <h4>Календарь на текущий месяц:</h4>
+    <pre >{{ text_calendar }}</pre>
+</div>
+{% endblock %}

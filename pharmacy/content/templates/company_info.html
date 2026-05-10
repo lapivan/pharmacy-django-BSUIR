@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ company.name_full }}</h1>
+<p>{{ company.main_info }}</p>
+
+<h2>Краткое наименование</h2>
+<p>{{ company.name_short }}</p>
+
+<h2>История компании</h2>
+<p>{{ company.history }}</p>
+
+<h2>Реквизиты</h2>
+<p>{{ company.details }}</p>
+
+{% if company.logo %}
+    <img src="{{ company.logo.url }}" alt="{{ company.name_full }}">
+{% endif %}
+
+{% if user.is_superuser %}
+    <hr>
+    <a href="{% url 'company_info_update' %}">Редактировать информацию о компании (Admin)</a>
+{% endif %}
+{% endblock %}

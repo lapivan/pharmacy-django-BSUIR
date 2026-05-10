@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Отделы аптеки{% endblock %}
+
+{% block content %}
+    <h1>Список отделов</h1>
+    
+    {% if user.is_superuser %}
+        <br>
+        <a href="{% url 'department_create' %}">+ Добавить новый отдел</a>
+        <br><br>
+    {% endif %}
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Местоположение</th>
+                {% if user.is_superuser %}
+                    <th>Действия</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for dept in departments %}
+                <tr>
+                    <td>{{ dept.name }}</td>
+                    <td>{{ dept.location }}</td>
+                    {% if user.is_superuser %}
+                        <td>
+                            <a href="{% url 'department_update' dept.pk %}">Редактировать</a> | 
+                            <a href="{% url 'department_delete' dept.pk %}">Удалить</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">Отделы не найдены.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

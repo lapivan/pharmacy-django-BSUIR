@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Список поставщиков{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Наши поставщики</h1>
+        {% if user.is_superuser %}
+            <a href="{% url 'supplier_create' %}">+ Добавить поставщика</a>
+        {% endif %}
+    </div>
+
+    <br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Компания</th>
+                <th>Контактное лицо</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                {% if user.is_superuser %}
+                    <th>Действия</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier in suppliers %}
+                <tr>
+                    <td>
+                        <a href="{% url 'supplier_detail' supplier.pk %}">
+                            {{ supplier.name }}
+                        </a>
+                    </td>
+                    <td>{{ supplier.contact_person }}</td>
+                    <td>{{ supplier.phone_number }}</td>
+                    <td><a href="mailto:{{ supplier.email }}">{{ supplier.email }}</a></td>
+                    {% if user.is_superuser %}
+                        <td>
+                            <a href="{% url 'supplier_update' supplier.pk %}">Редактировать</a> | 
+                            <a href="{% url 'supplier_delete' supplier.pk %}">Удалить</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">
+                        Поставщики еще не добавлены в базу данных.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <div>
+        <a href="{% url 'medicine_list' %}">Вернуться в каталог</a>
+    </div>
+{% endblock %}

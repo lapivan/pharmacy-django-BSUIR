@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Поставщик: {{ object.name }}{% endblock %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'supplier_list' %}">Назад к списку поставщиков</a>
+    </div>
+
+    <br>
+
+    <div>
+        <h1>{{ object.name }}</h1>
+        
+        <div>
+            <div>
+                <h3>Контактные данные</h3>
+                <p><strong>Представитель:</strong> {{ object.contact_person }}</p>
+                <p><strong>Телефон:</strong> {{ object.phone_number }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ object.email }}">{{ object.email }}</a></p>
+            </div>
+            <div>
+                <h3>Системная информация</h3>
+                <p><strong>Добавлен:</strong> {{ object.created_at|date:"d.m.Y H:i" }}</p>
+                <p><strong>Обновлен:</strong> {{ object.updated_at|date:"d.m.Y H:i" }}</p>
+            </div>
+        </div>
+
+        {% if user.is_superuser %}
+            <div>
+                <a href="{% url 'supplier_update' object.pk %}">Редактировать</a> | 
+                <a href="{% url 'supplier_delete' object.pk %}">Удалить</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <br>
+    <h2>Товары от этого поставщика</h2>
+    <div>
+        {% for medicine in object.medicines.all %}
+            <div>
+                <h4>{{ medicine.name }}</h4>
+                <p>Цена: {{ medicine.price }} руб.</p>
+                <a href="{% url 'medicine_detail' medicine.pk %}">Смотреть товар</a>
+            </div>
+            {% if not forloop.last %}<hr>{% endif %}
+        {% empty %}
+            <p>У этого поставщика пока нет закрепленных медикаментов.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Аналитика и Статистика{% endblock %}
+
+{% block content %}
+    <h1>Дашборд руководителя</h1>
+
+    <div>
+        <div>
+            <h3>1. Финансовая сводка</h3>
+            <p><b>Общая выручка:</b> {{ revenue.total_revenue|floatformat:2 }} руб.</p>
+            <ul>
+                {% for dept in revenue.revenue_by_dept %}
+                    <li>{{ dept.name }}: {{ dept.dept_revenue|default:"0"|floatformat:2 }} руб.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h3>2. Продуктовые инсайты</h3>
+            <ul>
+                <li>
+                    <b>Популярная категория:</b> 
+                    {% if insights.most_popular %}
+                        {{ insights.most_popular.medicine__category__name }} ({{ insights.most_popular.total_qty }} шт.)
+                    {% else %}
+                        Нет данных
+                    {% endif %}
+                </li>
+                <li>
+                    <b>Прибыльная категория:</b> 
+                    {% if insights.most_profitable %}
+                        {{ insights.most_profitable.medicine__category__name }} ({{ insights.most_profitable.total_profit|floatformat:2 }} руб.)
+                    {% else %}
+                        Нет данных
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>3. Статистика чеков и клиентов</h3>
+    <table>
+        <tr>
+            <th>Показатель</th>
+            <th>Среднее (Mean)</th>
+            <th>Медиана</th>
+        </tr>
+        <tr>
+            <td>Сумма чека</td>
+            <td>{{ sales_stats.mean|floatformat:2 }} руб.</td>
+            <td>{{ sales_stats.median|floatformat:2 }} руб.</td>
+        </tr>
+        <tr>
+            <td>Возраст клиента</td>
+            <td>{{ age_stats.mean_age|floatformat:1 }} лет</td>
+            <td>{{ age_stats.median_age|floatformat:1 }} лет</td>
+        </tr>
+    </table>
+
+    <h3>4. Продажи по медикаментам (Алфавитный порядок)</h3>
+    <table>
+        <tr>
+            <th>Препарат</th>
+            <th>Итоговая сумма продаж</th>
+        </tr>
+        {% for med in medicines_alphabetical %}
+            <tr>
+                <td>{{ med.name }}</td>
+                <td><b>{{ med.total_sales_sum|default:"0"|floatformat:2 }}</b> руб.</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <h3>Визуализация продаж</h3>
+    {% if chart %}
+        <div>
+            <img src="data:image/png;base64,{{ chart }}" alt="Диаграмма продаж">
+        </div>
+    {% else %}
+        <p>Данных для построения диаграммы пока нет.</p>
+    {% endif %}
+    <hr>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>FAQ</h1>
+{% if user.is_superuser %}
+    <a href="{% url 'FAQ_create' %}">Добавить вопрос (Admin)</a>
+{% endif %}
+<dl>
+    {% for item in faq %}
+        <dt><strong>{{ item.question }}</strong></dt>
+        <dd>{{ item.answer }}</dd>
+        <p>Создано: {{ item.created_at|date:"d/m/Y" }}</p>
+        <p>Обновлено: {{ item.updated_at|date:"d/m/Y" }}</p>
+        {% if user.is_superuser %}
+            <dd>
+                <a href="{% url 'FAQ_update' item.pk %}">Изменить</a> | 
+                <a href="{% url 'FAQ_delete' item.pk %}">Удалить</a>
+            </dd>
+        {% endif %}
+        <br>
+    {% endfor %}
+</dl>
+{% endblock %}

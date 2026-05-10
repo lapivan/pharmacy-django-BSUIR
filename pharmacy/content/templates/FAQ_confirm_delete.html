@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Удаление вопроса FAQ</h1>
+<p>Удалить вопрос: <strong>"{{ object.question }}"</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить навсегда</button>
+</form>
+<a href="{% url 'FAQ' %}">Отмена</a>
+{% endblock %}

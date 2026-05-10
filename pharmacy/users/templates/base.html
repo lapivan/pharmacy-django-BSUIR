@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Аптека{% endblock %}</title>
+</head>
+<body>
+
+    <header>
+        <div>
+            {% if user.is_authenticated %}
+                Вы: <b>{{ user.username }}</b> 
+                <small>
+                    ({% if user.is_superuser %}Админ{% elif user.employee %}Сотрудник{% else %}Покупатель{% endif %})
+                </small> |
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}"><b>Войти</b></a> |
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+        <h1><a href="{% url 'news_list' %}">Аптечная сеть</a></h1>
+    </header>
+
+    <nav>
+        <div>
+            <a href="{% url 'medicine_list' %}"><b>Каталог</b></a> | 
+            <a href="{% url 'news_list' %}">Новости компании</a> |
+            <a href="{% url 'company_info' %}">О компании</a> |
+            <a href="{% url 'contacts' %}">Контакты</a> |
+            <a href="{% url 'FAQ' %}">Словарь (FAQ)</a> |
+            <a href="{% url 'promocode_list' %}">Промокоды и Купоны</a> |
+            <a href="{% url 'vacancy_list' %}">Вакансии</a> |
+            <a href="{% url 'review_list' %}">Отзывы</a> |
+            <a href="{% url 'global_news' %}">Новости медицины</a> |
+            <a href="{% url 'additional_services' %}">Доп. услуги</a> |
+            <a href="{% url 'performance_test' %}">Дополнительное задание</a>
+            
+        </div>
+        {% if user.is_authenticated %}
+            {% if not user.employee or user.is_superuser %}
+            <div>
+                <span><b>Кабинет покупателя:</b></span>
+                <a href="{% url 'user_purchases' %}">Мои покупки</a> |
+                <a href="{% url 'sale_create' %}">Совершить покупку</a> |
+                <a href="{% url 'department_list' %}">Отделы аптек</a> |
+                <a href="{% url 'review_create' %}">Оставить отзыв</a>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        {% if user.is_authenticated and user.employee or user.is_superuser %}
+            <div>
+                <span><b>Панель сотрудника:</b></span>
+                <a href="{% url 'employee_sales' %}">Мои продажи</a> | 
+                <a href="{% url 'supplier_list' %}">Поставщики</a> |
+                <a href="{% url 'sale_create' %}">Регистрация продажи</a>
+            </div>
+        {% endif %}
+
+        {% if user.is_superuser %}
+            <div>
+                <span><b>Администрирование:</b></span>
+                <a href="{% url 'employee_list' %}">Управление персоналом</a> |
+                <a href="{% url 'category_list' %}">Категории лекарств</a> |
+                <a href="{% url 'dashboard' %}">Выручка и Аналитика</a>
+            </div>
+        {% endif %}
+    </nav>
+
+    <hr>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div>
+            <div>&copy; 2026 Информационная система "Аптека"</div>
+            <div>
+                <a href="{% url 'privacy' %}">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
