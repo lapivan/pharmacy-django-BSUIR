@@ -8,10 +8,13 @@ class CompanyInfo(TimeStampedModel):
     name_full = models.CharField(max_length=100, verbose_name="Full Name")
     name_short = models.CharField(max_length=50, verbose_name="Short Name")
     main_info = models.TextField(verbose_name="Main Description")
-    logo = models.ImageField(upload_to='company/', blank=True, null=True)
+
+    # blank - разрешает оставлять в форме поле пустым, null - позволяет хранить null в колонке бд.
+    logo = models.ImageField(upload_to='company/', blank=True, null=True) 
     history = models.TextField(verbose_name="Company History")
     details = models.CharField(max_length=255, verbose_name="Legal Details")
 
+    # настройки для админки.
     class Meta:
         verbose_name = "Company Information"
         verbose_name_plural = "Company Information"

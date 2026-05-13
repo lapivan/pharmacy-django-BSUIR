@@ -6,16 +6,27 @@
     <h1>Связаться с нами</h1>
     <p>Ниже представлен список сотрудников и их контактные данные для связи.</p>
 
-    <div >
-        {% for emp in employees %}
-            <div >
-                <h3>{{ emp.full_name }}</h3>
-                <p><strong>Должность:</strong> {{ emp.position }}</p>
-                <p><strong>Отдел:</strong> {{ emp.department.name }}</p>
-                <p><strong>Email:</strong> <a href="mailto:{{ emp.user.email }}">{{ emp.user.email }}</a></p>
-            </div>
-        {% empty %}
-            <p>Контактная информация временно недоступна.</p>
-        {% endfor %}
-    </div>
+    <hr>
+
+    {% for emp in employees %}
+        <div>
+            {% if emp.user.profile and emp.user.profile.avatar %}
+                <img src="{{ emp.user.profile.avatar.url }}" alt="{{ emp.full_name }}" width="120" height="120">
+            {% else %}
+                <p><i>(Фото отсутствует: {{ emp.user.username }})</i></p>
+            {% endif %}
+
+            <h3>{{ emp.full_name }}</h3>
+            
+            <ul>
+                <li><b>Должность:</b> {{ emp.position }}</li>
+                <li><b>Отдел:</b> {{ emp.department.name|default:"—" }}</li>
+                <li><b>Телефон:</b> {{ emp.user.phone_number|default:"НЕТ ДАННЫХ В БАЗЕ" }}</li>
+                <li><b>Email:</b> {{ emp.user.email }}</li>
+            </ul>
+        </div>
+        <hr> {% empty %}
+        <p>Контактная информация временно недоступна.</p>
+    {% endfor %}
+
 {% endblock %}

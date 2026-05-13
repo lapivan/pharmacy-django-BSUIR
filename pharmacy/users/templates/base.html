@@ -29,6 +29,7 @@
     <nav>
         <div>
             <a href="{% url 'medicine_list' %}"><b>Каталог</b></a> | 
+            <a href="{% url 'category_list' %}">Категории лекарств</a> |
             <a href="{% url 'news_list' %}">Новости компании</a> |
             <a href="{% url 'company_info' %}">О компании</a> |
             <a href="{% url 'contacts' %}">Контакты</a> |
@@ -65,8 +66,7 @@
         {% if user.is_superuser %}
             <div>
                 <span><b>Администрирование:</b></span>
-                <a href="{% url 'employee_list' %}">Управление персоналом</a> |
-                <a href="{% url 'category_list' %}">Категории лекарств</a> |
+                <a href="{% url 'employee_list' %}">Управление персоналом</a> ||
                 <a href="{% url 'dashboard' %}">Выручка и Аналитика</a>
             </div>
         {% endif %}

@@ -106,7 +106,7 @@ class Infrastructure:
 
         async def main():
             tasks = [Infrastructure.fetch_texture_data(i, logs) for i in range(20)]
-            await asyncio.gather(*tasks)
+            await asyncio.gather(*tasks) # Запустить несколько параллельно и дождаться всех, а звездочка это распаковка.
 
         start_time = time.perf_counter()
         asyncio.run(main())

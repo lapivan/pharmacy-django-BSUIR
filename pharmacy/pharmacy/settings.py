@@ -132,7 +132,7 @@ LOGOUT_REDIRECT_URL = 'news_list'
 
 LOGIN_URL = 'login'
 
-LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'ERROR')
+LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'DEBUG')
 
 LOGGING = {
     'version': 1,

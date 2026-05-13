@@ -49,6 +49,7 @@ class NewsCreateView(AdminOnlyMixin, CreateView):
     model = News
     form_class = NewsForm
     template_name = 'news_form.html'
+    # вычисляет url при первом использовании (лениво).
     success_url = reverse_lazy('news_list')
 
     def form_valid(self, form):

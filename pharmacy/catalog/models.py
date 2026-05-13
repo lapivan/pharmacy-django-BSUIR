@@ -39,6 +39,8 @@ class Department(TimeStampedModel):
 
 class Medicine(TimeStampedModel):
     name = models.CharField(max_length=200)
+
+    # related_name задает имя обратной связи от связанной модели к текущей.
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='medicines')
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='medicines')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='medicines')
@@ -71,6 +73,8 @@ class EmployeeProfile(TimeStampedModel):
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     hire_date = models.DateField(auto_now_add=True)
     date_of_birth = models.DateField()
+
+    #clean срабатывает при сохранении через форму.
     def clean(self):
         if self.date_of_birth:
             today = date.today()
@@ -113,6 +117,7 @@ class SaleItem(TimeStampedModel):
     def get_cost(self):
         return self.price_at_sale * self.quantity
 
+    #save при сохранении объекта в бд.
     def save(self, *args, **kwargs):
         if not self.price_at_sale:
             self.price_at_sale = self.medicine.price

@@ -64,7 +64,7 @@ class MedicineListView(ListView):
         
         return context
 
-class CategoryListView(AdminOnlyMixin, ListView):
+class CategoryListView(ListView):
     model = Category
     template_name = 'category_list.html'
     context_object_name = 'categories'
